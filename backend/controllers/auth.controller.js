@@ -59,6 +59,9 @@ export const signup = async (req, res) => {
                 following: newUser.following,
                 profileImg: newUser.profileImg,
                 coverImg: newUser.coverImg,
+                projects: newUser.projects,
+                skills: newUser.skills,
+                interestedDept: newUser.interestedDept,
             });
         }else{
             res.status(400).json({error: "Invalid user data"});
@@ -91,7 +94,10 @@ export const login = async (req, res) => {
                 following: user.following,
                 profileImg: user.profileImg,
                 coverImg: user.coverImg,
-        })
+                projects: user.projects,
+                skills: user.skills,
+                interestedDept: user.interestedDept,
+        });
     } catch (error) {
         console.log("Error in login controller", error.message);
         res.status(500).json({error: "Internal server error"});

@@ -58,7 +58,30 @@ const userSchema = new mongoose.Schema(
         link: {
             type: String,
             default: "",
-        }
+        },
+        projects: {
+            type: String,
+            default: "",
+        },
+        experience: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+                default: []
+            }
+        ],
+        skills: {
+            type: String,
+            default: "",
+        },
+        interestedField: {
+            type: String,
+            default: "",
+        },
+        certifications: {
+            type: String,
+            default: "",
+        },
     },
     { timestamps: true }
 );
