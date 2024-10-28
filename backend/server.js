@@ -9,6 +9,9 @@ import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import groupRoutes from './routes/group.routes.js';
 import eventRoutes from './routes/event.routes.js';
+import mentorRoutes from './routes/mentor.routes.js';
+import newsRoutes from './routes/news.routes.js';
+import projectRoutes from './routes/project.routes.js';
 import connectMongoDB from "./db/connectMongoDB.js";
 
 dotenv.config();
@@ -31,7 +34,9 @@ app.use("/api/auth",authRoutes);
 app.use("/api/users", userRoutes);
 app.use('/api/groups',groupRoutes);
 app.use('/api/event',eventRoutes);
-
+app.use('/api/mentorship',mentorRoutes);
+app.use('/api/news',newsRoutes);
+app.use('/api/projects',projectRoutes);
 
 app.listen(PORT, () =>{
     console.log(`server is running on port ${PORT}`);
