@@ -42,7 +42,13 @@ const userSchema = new mongoose.Schema(
                 default: []
             }
         ],
-
+        connections: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+                default: [],
+            }
+        ],
         profileImg: {
             type: String,
             default: "",
@@ -74,9 +80,9 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: "",
         },
-        interestedField: {
+        department: {
             type: String,
-            default: "",
+            required: true,
         },
         certifications: {
             type: String,

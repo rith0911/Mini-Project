@@ -159,3 +159,34 @@ export const updateUser = async (req,res) => {
         res.status(500).json({error: error.message});
      }
 };
+
+export const connecting = async (req,res) => {
+    const {id} = req.params;
+    try{
+        const reciever = await User.findById(id);
+        const sender = await User.findById(req.user.id);
+
+        if(!reciever || !sender) return res.status(404).json({message: 'User not found'});
+
+        reciever.connections.push(sender._id);
+        sender.connections.push(reciever._id);
+
+        await reciever.save();
+        await sender.save();
+
+        res.status(200).json({ message: 'Connection request sent'});
+
+    } catch(err){
+        res.status(500).json({error: err,message});
+    }
+};
+
+export const connectionReq = async (req,res) =>{
+    try {
+        const user = await User.findById(req.user.id).populate('connections', 'fullname department');
+
+        res.json(user.connections);
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+};

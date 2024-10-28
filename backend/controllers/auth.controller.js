@@ -4,10 +4,9 @@ import { generateTokenAndSetCookie } from "../lib/utils/generateToken.js";
 
 export const signup = async (req, res) => {
     try {
-        const {fullname, rollnumber, email, password} = req.body;
+        const {fullname, rollnumber, email, password, department} = req.body;
 
         const emailRegex = /^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}/i;
-
 
         if(!emailRegex.test(email)){
             return res.status(400).json({error: "Invalid email format"});
@@ -44,6 +43,7 @@ export const signup = async (req, res) => {
             rollnumber,
             email,
             password: hashedPassword,
+            department,
         });
 
         if(newUser){
@@ -57,11 +57,12 @@ export const signup = async (req, res) => {
                 email: newUser.email,
                 followers: newUser.followers,
                 following: newUser.following,
+                connections: newUser.connections,
                 profileImg: newUser.profileImg,
                 coverImg: newUser.coverImg,
                 projects: newUser.projects,
                 skills: newUser.skills,
-                interestedDept: newUser.interestedDept,
+                department: newUser.department,
             });
         }else{
             res.status(400).json({error: "Invalid user data"});
@@ -92,6 +93,7 @@ export const login = async (req, res) => {
                 email: user.email,
                 followers: user.followers,
                 following: user.following,
+                connections: user.connections,
                 profileImg: user.profileImg,
                 coverImg: user.coverImg,
                 projects: user.projects,
