@@ -1,32 +1,40 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { generateTokenAndSetCookie } from "../lib/utils/generateToken.js";
+//import Departments from "../models/departments.model.js";
 
 export const signup = async (req, res) => {
     try {
-        const {fullname, rollnumber, email, password, department} = req.body;
+        const {name, rollnumber, email, password,role} = req.body;
 
-        const emailRegex = /^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}/i;
+        // const department = await Departments.findOne({name: departmentName})
 
-        if(!emailRegex.test(email)){
-            return res.status(400).json({error: "Invalid email format"});
-        }
+        // const emailRegex = /^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}/i;
 
-        const rollNumRegex = /[0-9]{2}[a-zA-Z]{1}[0-9]{2,}[a-zA-Z]{1,}[0-9A-Za-z]{4}$/;
+        // if(!emailRegex.test(email)){
+        //     return res.status(400).json({error: "Invalid email format"});
+        // }
 
-        if(!rollNumRegex.test(rollnumber)){
-            return res.status(400).json({error: "Invalid rollnumber format"});
-        }
+        // const rollNumRegex = /[0-9]{2}[a-zA-Z]{1}[0-9]{2,}[a-zA-Z]{1,}[0-9A-Za-z]{4}$/;
 
+        // const rollNumRegexF = /[a-zA-Z]{7}[0-9]{3}$/;
+
+        // if(!rollNumRegex.test(rollnumber)){
+        //     return res.status(400).json({error: "Invalid rollnumber format"});
+        // }
 
         const existingUser = await User.findOne({ rollnumber });
         if(existingUser){
-            return res.status(400).json({error: "Username already registered"});
+            return res.status(400).json({error: "RollNumber already registered"});
         }
 
         const existingEmail = await User.findOne({ email });
         if(existingEmail){
             return res.status(400).json({error: "Email already registered"});
+        }
+
+        if(!role){
+            return res.status(400).json({success: false, message: 'Invalid role'});
         }
 
         if(password.length < 6){
@@ -39,11 +47,12 @@ export const signup = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const newUser = new User({
-            fullname,
+            name,
             rollnumber,
             email,
             password: hashedPassword,
-            department,
+            //departmentId: department._id,
+            role,
         });
 
         if(newUser){
@@ -52,17 +61,20 @@ export const signup = async (req, res) => {
 
             res.status(201).json({
                 _id: newUser._id,
-                fullname: newUser.fullname,
+                name: newUser.name,
                 rollnumber: newUser.rollnumber,
                 email: newUser.email,
-                followers: newUser.followers,
-                following: newUser.following,
+                // followers: newUser.followers,
+                // following: newUser.following,
                 connections: newUser.connections,
+                role: newUser.role,
                 profileImg: newUser.profileImg,
                 coverImg: newUser.coverImg,
                 projects: newUser.projects,
                 skills: newUser.skills,
-                department: newUser.department,
+                //departmentId: newUser.departmentId,
+                experience: newUser.experience,
+                role: newUser.role,
             });
         }else{
             res.status(400).json({error: "Invalid user data"});
@@ -88,7 +100,7 @@ export const login = async (req, res) => {
 
         res.status(200).json({
             _id: user._id,
-                fullname: user.fullname,
+                name: user.name,
                 rollnumber: user.rollnumber,
                 email: user.email,
                 followers: user.followers,

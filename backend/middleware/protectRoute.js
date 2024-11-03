@@ -27,3 +27,11 @@ export const protectRoute = async(req, res, next) =>{
         return res.status(500).json({error: "Internal Server Error"});
     }
 };
+
+export const checkRole = async (req,res,next) =>{
+    const role = req.user.role;
+    if(role.toString() !== 'faculty' ){
+        return res.status(403).json({message: 'Access Denied'});
+    }
+    next();
+};

@@ -2,12 +2,7 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
     {
-        // username: {
-        //     type: String,
-        //     required: true,
-        //     unique: true,
-        // },
-        fullname: {
+        name: {
             type: String,
             required: true,
         },
@@ -28,20 +23,6 @@ const userSchema = new mongoose.Schema(
             required: true,
             unique: true,
         },
-        followers: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User",
-                default: []
-            }
-        ],
-        following: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User",
-                default: []
-            }
-        ],
         connections: [
             {
                 type: mongoose.Schema.Types.ObjectId,
@@ -69,25 +50,25 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: "",
         },
+        skills: [String],
         experience: [
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User",
-                default: []
+                title: String,
+                project: String,
+                startDate: Date,
+                endDate: Date,
+                description: String,
             }
         ],
-        skills: {
+        role:{
             type: String,
-            default: "",
+            enum: ['faculty' , 'student'],
+            default: 'student'
         },
-        department: {
+        headline: {
             type: String,
-            required: true,
-        },
-        certifications: {
-            type: String,
-            default: "",
-        },
+            default: 'CVR Member',
+        }
     },
     { timestamps: true }
 );
